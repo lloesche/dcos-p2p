@@ -8,7 +8,7 @@ do
 		-o ${release_file}.torrent \
 		--createdBy "DC/OS P2P Downloader" \
 		--private true \
-		--announce "${tracker_scheme:-http}://${tracker_host:-$out_ip}:${tracker_port:-80}/announce" \
+		--announce "${tracker_scheme:-http}://${tracker_host:-$out_ip}:${tracker_port:-6969}/announce" \
 		--urlList "${download_scheme:-http}://${download_host:-$out_ip}:${download_port:-80}/${release_file}" \
 		${release_file}
 done
