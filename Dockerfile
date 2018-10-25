@@ -11,7 +11,8 @@ FROM node:alpine
 RUN apk add --no-cache ca-certificates nginx tini aria2 \
     && npm install -g create-torrent
 COPY --from=chihaya-build-env /go/bin/chihaya /bin/chihaya
-COPY startup /bin/startup
+COPY serve /bin/serve
+COPY get /bin/get
 COPY nginx_vhost.conf /etc/nginx/conf.d/default.conf
 COPY chihaya.yaml /etc/chihaya.yaml
 RUN mkdir -p /usr/share/nginx/html \
@@ -20,4 +21,4 @@ RUN mkdir -p /usr/share/nginx/html \
 EXPOSE 80 443
 
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["/bin/startup"]
+CMD ["/bin/serve"]

@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/aria2c --allow-overwrite=true --enable-dht=false --enable-dht6=false --seed-time=0.1 --follow-torrent=mem $*
