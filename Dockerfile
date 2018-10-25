@@ -8,7 +8,7 @@ RUN dep ensure
 RUN CGO_ENABLED=0 go install github.com/chihaya/chihaya/cmd/...
 
 FROM node:alpine
-RUN apk add --no-cache ca-certificates nginx tini \
+RUN apk add --no-cache ca-certificates nginx tini aria2 \
     && npm install -g create-torrent
 COPY --from=chihaya-build-env /go/bin/chihaya /bin/chihaya
 COPY startup /bin/startup
