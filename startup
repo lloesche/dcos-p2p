@@ -1,0 +1,18 @@
+#!/bin/sh
+out_ip=$(ip r g 8.8.8.8 | sed -e 's/.*src //' | head -1)
+cd /usr/share/nginx/html
+for release_file in *.tar.gz
+do
+	echo "Creating torrent for ${release_file}"
+	/usr/local/bin/create-torrent \
+		-o ${release_file}.torrent \
+		--createdBy "DC/OS P2P Downloader" \
+		--private true \
+		--announce "${tracker_scheme:-http}://${tracker_host:-$out_ip}:${tracker_port:-80}/announce" \
+		--urlList "${download_scheme:-http}://${download_host:-$out_ip}:${download_port:-80}/${release_file}" \
+		${release_file}
+done
+mkdir -p /run/nginx \
+	&& chown nginx:nginx /run/nginx \
+	&& /usr/sbin/nginx
+exec su - chihaya -c /bin/chihaya
