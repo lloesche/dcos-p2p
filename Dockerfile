@@ -15,7 +15,7 @@ COPY serve /bin/serve
 COPY get /bin/get
 COPY nginx_vhost.conf /etc/nginx/conf.d/default.conf
 COPY chihaya.yaml /etc/chihaya.yaml
-RUN mkdir -p /usr/share/nginx/html \
+RUN mkdir -p /data /usr/share/nginx/html \
     && adduser -D chihaya
 
 EXPOSE 80 443
