@@ -1,5 +1,5 @@
 #!/bin/sh
-out_ip=$(ip r g 8.8.8.8 | awk '{ for(i=1; i<NF; i++) { if($i == "src") {print $(i+1)} } }')
+out_ip=$(ip r g 8.8.8.8 | awk '{ for(i=1; i<NF; i++) { if($i == "src") {print $(i+1); exit} } }')
 : ${bootstrap_host:=$out_ip}
 cd /usr/share/nginx/html
 for release_file in *.tar.gz
