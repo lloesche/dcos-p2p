@@ -1,5 +1,6 @@
 #!/bin/sh
-out_ip=$(ip r g 8.8.8.8 | sed -e 's/.*src //' | head -1)
+out_ip=$(ip r g 8.8.8.8 | awk '{ for(i=1; i<NF; i++) { if($i == "src") {print $(i+1)} } }')
+: ${bootstrap_host:=$out_ip}
 cd /usr/share/nginx/html
 for release_file in *.tar.gz
 do
@@ -8,8 +9,8 @@ do
 		-o ${release_file}.torrent \
 		--createdBy "DC/OS P2P Downloader" \
 		--private true \
-		--announce "${tracker_scheme:-http}://${tracker_host:-$out_ip}:${tracker_port:-6969}/announce" \
-		--urlList "${download_scheme:-http}://${download_host:-$out_ip}:${download_port:-80}/${release_file}" \
+		--announce "${tracker_scheme:-http}://${tracker_host:-$bootstrap_host}:${tracker_port:-6969}/announce" \
+		--urlList "${download_scheme:-http}://${download_host:-$bootstrap_host}:${download_port:-80}/${release_file}" \
 		${release_file}
 done
 mkdir -p /run/nginx \
